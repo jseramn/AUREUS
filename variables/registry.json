@@ -1,0 +1,288 @@
+{
+  "$schema": "./registry.schema.json",
+  "version": "2026.7.1",
+  "description": "Registro canónico de variables AUREUS. Single source of truth para configuración, planes generados y validación.",
+  "variables": [
+    {
+      "name": "FABRICA_STATE",
+      "scope": "v1",
+      "default": "./state/pipeline.json",
+      "description": "Path del store JSON del pipeline v1 (fabrica CLI)."
+    },
+    {
+      "name": "FABRICA_DOMAIN",
+      "scope": "v1",
+      "default": null,
+      "description": "Apex con wildcard DNS hacia Vercel; default de --domain en fabrica deploy."
+    },
+    {
+      "name": "FABRICA_GH_ORG",
+      "scope": "v1",
+      "default": null,
+      "description": "Cuenta/org GitHub para los repos de sitios; default de --org en fabrica deploy. Sin default: requerido."
+    },
+    {
+      "name": "LOG_LEVEL",
+      "type": "enum",
+      "default": "info",
+      "enum": [
+        "trace",
+        "debug",
+        "info",
+        "warn",
+        "error"
+      ],
+      "phase": "transversal",
+      "description": "Nivel de logging estructurado."
+    },
+    {
+      "name": "DATABASE_PATH",
+      "type": "path",
+      "default": "./state/pipeline.json",
+      "phase": "transversal",
+      "description": "Backend de la state machine. JSON en AUREUS portable (SQLite en origen)."
+    },
+    {
+      "name": "OUTPUT_DIR",
+      "type": "path",
+      "default": "./output",
+      "phase": "transversal",
+      "description": "Raíz de artefactos (01-grok/, 02-metaprompt/, 03-mistral/, tars/)."
+    },
+    {
+      "name": "STORAGE_STATES_DIR",
+      "type": "path",
+      "default": "./data/storage-states",
+      "phase": "0/2/5",
+      "description": "Perfiles persistentes + vault de storageState (workers browser)."
+    },
+    {
+      "name": "CONCURRENCY_GROK",
+      "type": "int",
+      "default": 20,
+      "min": 1,
+      "phase": "2",
+      "description": "Tabs paralelos por cuenta en Fase 2."
+    },
+    {
+      "name": "CONCURRENCY_MISTRAL",
+      "type": "int",
+      "default": 8,
+      "min": 1,
+      "phase": "4",
+      "description": "Conversaciones API paralelas en Fase 4."
+    },
+    {
+      "name": "CONCURRENCY_ZAI",
+      "type": "int",
+      "default": 1,
+      "min": 1,
+      "phase": "5",
+      "description": "Builds paralelos en Fase 5 (z.ai es pesado)."
+    },
+    {
+      "name": "GROK_TIMEOUT_MS",
+      "type": "int",
+      "default": 1800000,
+      "min": 10000,
+      "phase": "2",
+      "description": "Timeout por negocio en Fase 2 (30 min)."
+    },
+    {
+      "name": "MISTRAL_REQUEST_TIMEOUT_MS",
+      "type": "int",
+      "default": 600000,
+      "min": 10000,
+      "phase": "4",
+      "description": "Timeout por negocio en Fase 4 (10 min)."
+    },
+    {
+      "name": "ZAI_BUILD_TIMEOUT_MS",
+      "type": "int",
+      "default": 1800000,
+      "min": 60000,
+      "phase": "5",
+      "description": "Timeout por build en Fase 5 (30 min)."
+    },
+    {
+      "name": "MISTRAL_API_KEY",
+      "type": "secret",
+      "default": null,
+      "required": false,
+      "phase": "4",
+      "description": "API key Mistral. Requerido si Fase 4 = Mistral."
+    },
+    {
+      "name": "MISTRAL_MODEL",
+      "type": "string",
+      "default": "mistral-large-latest",
+      "phase": "4",
+      "description": "Modelo de destilación."
+    },
+    {
+      "name": "MISTRAL_AGENT_ID",
+      "type": "string",
+      "default": null,
+      "required": false,
+      "phase": "4",
+      "description": "Reutiliza agente creado. Vacío → lo crea y cachea."
+    },
+    {
+      "name": "STEALTH_HEADLESS",
+      "type": "bool",
+      "default": true,
+      "phase": "2/5",
+      "description": "Headless true; false para debug headful."
+    },
+    {
+      "name": "PROXY_HTTPS",
+      "type": "string",
+      "default": null,
+      "required": false,
+      "phase": "2/5",
+      "description": "Proxy HTTPS anti-bot / rotación IP."
+    },
+    {
+      "name": "ACCOUNT_COOLDOWN_MS",
+      "type": "int",
+      "default": 60000,
+      "min": 0,
+      "phase": "2/5",
+      "description": "Cooldown entre usos de la misma cuenta."
+    },
+    {
+      "name": "MM_PROMPTS_DIR",
+      "type": "path",
+      "default": "./templates/prompts",
+      "phase": "2/3",
+      "description": "Override jerárquico de plantillas."
+    },
+    {
+      "name": "MAX_ATTEMPTS",
+      "type": "int",
+      "default": 3,
+      "min": 1,
+      "phase": "transversal",
+      "description": "Reintentos por unidad antes de failed."
+    },
+    {
+      "name": "LOCK_TTL_MS",
+      "type": "int",
+      "default": 1800000,
+      "min": 60000,
+      "phase": "transversal",
+      "description": "TTL de locks; stale se roban (30 min)."
+    },
+    {
+      "name": "MIN_OUTPUT_CHARS",
+      "type": "int",
+      "default": 500,
+      "min": 0,
+      "phase": "4",
+      "description": "Gate crudo de research. Reemplazable por Judge."
+    },
+    {
+      "name": "MIN_TAR_BYTES",
+      "type": "int",
+      "default": 10000,
+      "min": 0,
+      "phase": "5",
+      "description": "Gate crudo de build."
+    },
+    {
+      "name": "MODEL_ROUTER",
+      "type": "object",
+      "default": {
+        "phase2_probe": {
+          "provider": "browser-grok",
+          "fallback": "browser-perplexity"
+        },
+        "phase3_forge": {
+          "provider": "local-fs",
+          "fallback": "none"
+        },
+        "phase4_distill": {
+          "provider": "mistral-large-latest",
+          "fallback": "deepseek-chat",
+          "cost_per_1k": 0.002
+        },
+        "phase5_build": {
+          "provider": "browser-zai",
+          "fallback": "browser-bolt"
+        },
+        "judge": {
+          "provider": "gpt-4.1-mini",
+          "cost_per_1k": 0.0004
+        }
+      },
+      "phase": "transversal",
+      "description": "Routing de proveedor/modelo por fase con fallback y costo."
+    },
+    {
+      "name": "COST_BUDGET_PER_BATCH",
+      "type": "float",
+      "default": null,
+      "required": false,
+      "phase": "transversal",
+      "description": "Aborta lote si costo excedido (USD)."
+    },
+    {
+      "name": "QUALITY_THRESHOLD_LLM_JUDGE",
+      "type": "float",
+      "default": 0.75,
+      "min": 0,
+      "max": 1,
+      "phase": "2/4/5",
+      "description": "Score mínimo del Judge para avanzar (0–1)."
+    },
+    {
+      "name": "JUDGE_MODEL",
+      "type": "string",
+      "default": "gpt-4.1-mini",
+      "phase": "transversal",
+      "description": "Modelo del LLM-as-Judge (barato)."
+    },
+    {
+      "name": "BATCH_SIZE_DYNAMIC",
+      "type": "bool",
+      "default": true,
+      "phase": "transversal",
+      "description": "Ajusta batch si detecta 429/latencia alta."
+    },
+    {
+      "name": "HUMAN_GATE_THRESHOLD",
+      "type": "enum",
+      "default": "pre_sell",
+      "enum": [
+        "never",
+        "pre_publish",
+        "pre_sell",
+        "every_batch"
+      ],
+      "phase": "transversal",
+      "description": "Cuándo exigir sign-off humano."
+    },
+    {
+      "name": "VERTICAL_TEMPLATE",
+      "type": "string",
+      "default": "generic",
+      "phase": "1/3",
+      "description": "Vertical objetivo (restaurants, clinics, salons, ...). Cambia meta-prompt."
+    },
+    {
+      "name": "BRAND_KIT_REQUIRED",
+      "type": "bool",
+      "default": true,
+      "phase": "3",
+      "description": "Falla Fase 3 si no se extrae paleta/tipo (emite [NEEDS_HUMAN_BRAND])."
+    },
+    {
+      "name": "SALES_PIPELINE_HOOK",
+      "type": "path",
+      "default": null,
+      "required": false,
+      "phase": "post-5",
+      "description": "Webhook/CLI al CRM al curar un .tar sellable."
+    }
+  ]
+}

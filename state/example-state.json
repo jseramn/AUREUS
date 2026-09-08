@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "states": {
+    "norte-spa-wellness__example-city": {
+      "businessId": "norte-spa-wellness__example-city",
+      "stage": "REPORTED",
+      "discardReason": null,
+      "attempts": 0,
+      "lastError": null,
+      "lastErrorAt": null,
+      "outputs": {
+        "SPEC_READY": "03-site-spec/norte-spa-wellness__example-city.json",
+        "DEPLOYED": "https://norte-spa-demo.example.com (smoke=ok)",
+        "REPORTED": "05-sales-handoff/norte-spa-wellness__example-city.json"
+      },
+      "slug": "norte-spa-demo",
+      "lockedBy": null,
+      "lockedAt": null,
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:10:00.000Z"
+    },
+    "negocio-con-web__example-city": {
+      "businessId": "negocio-con-web__example-city",
+      "stage": "DISCARDED",
+      "discardReason": "has_website",
+      "attempts": 0,
+      "lastError": null,
+      "lastErrorAt": null,
+      "outputs": {},
+      "slug": null,
+      "lockedBy": null,
+      "lockedAt": null,
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:01.000Z"
+    }
+  }
+}

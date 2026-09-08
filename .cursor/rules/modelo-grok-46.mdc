@@ -1,0 +1,32 @@
+---
+description: Solo Grok 4.6, nunca Fast. Effort según hardening.
+alwaysApply: true
+---
+
+# Factory model policy
+
+Toda la fábrica AUREUS y **cualquier cloud agent** que se lance desde este repo usa **solo Grok 4.6**. No hay excepción por “rápido”, lote, preview o subagente.
+
+## Identidad
+
+- Model id: `grok-4.6`
+- `fast: false` **siempre**. Nunca Fast. Nunca `grok-4.6-fast` ni equivalentes `*-fast`.
+- El effort se elige por **hardening** (`low` | `medium` | `high` | `xhigh`). Nunca `default`, nunca `auto`.
+
+## Effort por oficio
+
+| Oficio | Effort |
+|--------|--------|
+| `criba` | `low` o `medium` |
+| `orquestador` | `medium` |
+| `investiga` | `high` |
+| `forja` | `high` |
+| `construye` | `high` o `xhigh` |
+
+## Prohibido
+
+- Fast (cualquier variante)
+- Composer
+- GLM
+- `grok-4.5` (política vieja; no es el modelo activo)
+- Cualquier otro modelo “por defecto” del producto

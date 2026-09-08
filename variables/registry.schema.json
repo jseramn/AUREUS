@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AUREUS Variables Registry",
+  "type": "object",
+  "required": ["version", "variables"],
+  "properties": {
+    "version": { "type": "string", "description": "Semver-like YYYY.M.patch" },
+    "description": { "type": "string" },
+    "variables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "default", "phase", "description"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+          "type": { "enum": ["int", "float", "bool", "string", "enum", "path", "secret", "object"] },
+          "default": {},
+          "required": { "type": "boolean", "default": false },
+          "min": { "type": "number" },
+          "max": { "type": "number" },
+          "enum": { "type": "array", "items": { "type": "string" } },
+          "phase": { "type": "string", "description": "Fase a la que pertenece (1-5, transversal, post-5, 0/2/5...)" },
+          "description": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "chatInput": [
+    { "role": "combobox", "name": "Enter a prompt here" },
+    { "css": "rich-textarea textarea" }
+  ],
+  "deepResearchToggle": [
+    { "text": "Deep Research" },
+    { "role": "switch", "name": "Deep Research" }
+  ],
+  "sendButton": [
+    { "role": "button", "name": "Run" },
+    { "ariaLabel": "Run" }
+  ]
+}

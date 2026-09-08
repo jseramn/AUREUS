@@ -1,0 +1,87 @@
+{
+  "$meta": {
+    "generated_by": "agents/orchestrator.md (AUREUS plan generator)",
+    "objective": "Generar y vender 40 sitios para restaurantes en Cartagena en 18 días",
+    "generated_at": "2026-07-07T10:00:00.000Z",
+    "note": "Ejemplo ilustrativo. Un plan real se genera pegando agents/orchestrator.md en un LLM junto con el objetivo."
+  },
+  "sizing": {
+    "objetivo_unidades": 40,
+    "descarte_esperado_pct": 45,
+    "dataset_apify_a_comprar": 80,
+    "negocios_que_llegaran_a_fase5": 24,
+    "sellables_esperados": 20
+  },
+  "variables": {
+    "VERTICAL_TEMPLATE": "restaurants",
+    "CONCURRENCY_GROK": 20,
+    "CONCURRENCY_MISTRAL": 8,
+    "CONCURRENCY_ZAI": 1,
+    "GROK_TIMEOUT_MS": 1800000,
+    "MISTRAL_REQUEST_TIMEOUT_MS": 600000,
+    "ZAI_BUILD_TIMEOUT_MS": 1800000,
+    "MAX_ATTEMPTS": 3,
+    "ACCOUNT_COOLDOWN_MS": 60000,
+    "QUALITY_THRESHOLD_LLM_JUDGE": 0.75,
+    "JUDGE_MODEL": "gpt-4.1-mini",
+    "BATCH_SIZE_DYNAMIC": true,
+    "HUMAN_GATE_THRESHOLD": "pre_sell",
+    "BRAND_KIT_REQUIRED": true,
+    "COST_BUDGET_PER_BATCH": 50
+  },
+  "timeline": [
+    { "dia": "1", "fase": "Fase 1 Criba", "accion": "ingest dataset Apify 80 rows + smoke --limit 3", "duracion": "30 min" },
+    { "dia": "1-2", "fase": "Fase 2 Sondeo", "accion": "run --stage grok (44 válidos)", "duracion": "~2.2h (3min × 44, conc 20)" },
+    { "dia": "2", "fase": "Fase 3 Forja", "accion": "run --stage metaprompt (FS)", "duracion": "<5 min" },
+    { "dia": "2-3", "fase": "Fase 4 Destilación", "accion": "run --stage mistral (conc 8)", "duracion": "~11 min (2min × 44, conc 8)" },
+    { "dia": "3-10", "fase": "Fase 5 Materialización", "accion": "run --stage zai (24 builds)", "duracion": "~3.6h (9min × 24, conc 1)" },
+    { "dia": "10-14", "fase": "Judge + curación", "accion": "Judge de buildabilidad + curación humana de .tar", "duracion": "4 días" },
+    { "dia": "14-18", "fase": "Sign-off pre-sell", "accion": "sign-off sellable en .tar.meta.json + hook CRM", "duracion": "4 días" }
+  ],
+  "gates": {
+    "judge_threshold_por_fase": {
+      "fase1_criba": 0.7,
+      "fase2_sondeo": 0.75,
+      "fase3_forja": 0.75,
+      "fase4_destilacion": 0.75,
+      "fase5_materializacion": 0.8
+    },
+    "human_gates": [
+      { "momento": "post-curación", "que": "revisar .tar sellables vs descartar" },
+      { "momento": "pre-sell", "que": "sign-off sellable:true, approvedBy, approvedAt en .tar.meta.json" }
+    ]
+  },
+  "presupuesto": {
+    "fase2_sondeo": { "tokens_estimados": "n/a (browser)", "costo_usd": 0 },
+    "fase3_forja": { "tokens_estimados": "n/a (FS)", "costo_usd": 0 },
+    "fase4_destilacion": { "tokens_estimados": "~2.6M (44 × ~60k)", "costo_usd": 5.2 },
+    "judge_5_fases": { "tokens_estimados": "~1.3M", "costo_usd": 0.5 },
+    "total_estimado_usd": 5.7,
+    "vs_budget": 50,
+    "headroom": 44.3
+  },
+  "riesgos": [
+    { "riesgo": "reauth de cuentas grok/zai", "mitigacion": "session vault periódico, pickAvailable LRU + cooldown, setState needs_reauth" },
+    { "riesgo": "rate-limit 429 en Mistral", "mitigacion": "backoff exponencial + BATCH_SIZE_DYNAMIC (halving tras 3×429)" },
+    { "riesgo": "UI drift en grok/zai", "mitigacion": "selectors/*.json con fallback jerárquico (role > aria > text > css)" },
+    { "riesgo": "alucinación de research", "mitigacion": "Judge Fase 2 con dimensión no_alucinacion + repair_hint" },
+    { "riesgo": ".tar vacío/corrupto", "mitigacion": "MIN_TAR_BYTES=10000 + Judge Fase 5 buildabilidad" }
+  ],
+  "comando_arranque": [
+    "pnpm install",
+    "cp .env.example .env  # set MISTRAL_API_KEY",
+    "pnpm aureus doctor",
+    "pnpm aureus smoke",
+    "pnpm aureus ingest examples/sample-apify.json --limit 3 --dry-run",
+    "pnpm aureus ingest examples/sample-apify.json",
+    "# Fases 2/4/5 requieren workers bring-your-own (ver phases/README.md)",
+    "pnpm aureus run --phase forja --limit 3   # smoke Forja",
+    "pnpm aureus run --phase forja             # full",
+    "pnpm aureus status"
+  ],
+  "prerrequisitos_faltantes": [
+    "MISTRAL_API_KEY para Fase 4",
+    "≥1 cuenta grok con sesión persistida (mm auth grok) para Fase 2",
+    "≥1 cuenta z.ai con sesión persistida (mm auth zai) para Fase 5"
+  ]
+}

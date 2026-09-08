@@ -1,0 +1,29 @@
+{
+  "chatInput": [
+    { "role": "textbox", "name": "Chat" },
+    { "placeholder": "Ask anything" },
+    { "css": "textarea[autocomplete='off']" }
+  ],
+  "sendButton": [
+    { "ariaLabel": "Submit" },
+    { "role": "button", "name": "Send" },
+    { "css": "button[aria-label='Send']" }
+  ],
+  "newChat": [
+    { "role": "button", "name": "New chat" },
+    { "text": "New chat" },
+    { "css": "a[href='/new']" }
+  ],
+  "copyButton": [
+    { "ariaLabel": "Copy" },
+    { "role": "button", "name": "Copy" }
+  ],
+  "assistantTurn": [
+    { "css": "[data-testid='assistant-turn']" },
+    { "css": "div[data-message-author-role='assistant']" }
+  ],
+  "authWall": [
+    { "text": "Verify it's you" },
+    { "role": "button", "name": "Sign in" }
+  ]
+}

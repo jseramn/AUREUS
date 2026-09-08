@@ -1,0 +1,33 @@
+{/* ConnectingFlow — path data SIN porcentajes.
+    viewBox 0 0 100 100 → usar números (16.5 = 16.5% del viewBox). */}
+<svg
+  className="absolute inset-0 w-full h-full pointer-events-none z-0 hidden lg:block"
+  viewBox="0 0 100 100"
+  preserveAspectRatio="none"
+>
+  <path
+    d="M 16.5 20 C 33 25, 33 25, 50 20 C 67 15, 67 25, 83.5 20"
+    fill="none"
+    stroke="rgba(163, 177, 138, 0.1)"
+    strokeWidth="2"
+    strokeDasharray="6 8"
+  />
+  <path
+    d="M 16.5 55 C 33 60, 33 60, 50 55 C 67 50, 67 60, 83.5 55"
+    fill="none"
+    stroke="rgba(163, 177, 138, 0.1)"
+    strokeWidth="2"
+    strokeDasharray="6 8"
+  />
+  <path d="M 16.5 30 L 16.5 45" fill="none" stroke="rgba(163, 177, 138, 0.08)" strokeWidth="2" strokeDasharray="4 6" />
+  <path d="M 50 30 L 50 45" fill="none" stroke="rgba(163, 177, 138, 0.08)" strokeWidth="2" strokeDasharray="4 6" />
+  <path d="M 83.5 30 L 83.5 45" fill="none" stroke="rgba(163, 177, 138, 0.08)" strokeWidth="2" strokeDasharray="4 6" />
+  <circle r="3" fill="rgba(163, 177, 138, 0.3)">
+    <animateMotion dur="6s" repeatCount="indefinite"
+      path="M 16.5 20 C 33 25, 33 25, 50 20 C 67 15, 67 25, 83.5 20" />
+  </circle>
+  <circle r="3" fill="rgba(163, 177, 138, 0.3)">
+    <animateMotion dur="6s" repeatCount="indefinite" begin="3s"
+      path="M 16.5 55 C 33 60, 33 60, 50 55 C 67 50, 67 60, 83.5 55" />
+  </circle>
+</svg>

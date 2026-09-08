@@ -1,0 +1,58 @@
+[
+  {
+    "title": "Pizzería Don Luigi",
+    "categories": ["Italian restaurant", "Pizza restaurant"],
+    "phone": "+57 5 123 4567",
+    "website": null,
+    "address": "Carrera 4 #30-45",
+    "city": "Cartagena",
+    "country": "Colombia",
+    "googleMapsUrl": "https://maps.app.goo.gl/donluigi",
+    "rating": 4.6,
+    "reviewsCount": 218,
+    "instagram": "@donluigi",
+    "permanentlyClosed": false
+  },
+  {
+    "title": "Sazón Cartagena",
+    "categories": ["Caribbean restaurant"],
+    "phone": "+57 5 765 4321",
+    "website": "https://sazon.co",
+    "address": "Calle San Andrés 12",
+    "city": "Cartagena",
+    "country": "Colombia",
+    "googleMapsUrl": "https://maps.app.goo.gl/sazon",
+    "rating": 4.3,
+    "reviewsCount": 94,
+    "permanentlyClosed": false
+  },
+  {
+    "title": "El Rincón del Marisco",
+    "categories": ["Seafood restaurant"],
+    "phone": "+57 5 999 0000",
+    "website": null,
+    "city": "Cartagena",
+    "googleMapsUrl": "https://maps.app.goo.gl/rincon",
+    "rating": 4.8,
+    "reviewsCount": 412,
+    "permanentlyClosed": false
+  },
+  {
+    "name": "Café San Roque",
+    "categories": ["Coffee shop"],
+    "phone": null,
+    "website": null,
+    "permanentlyClosed": true
+  },
+  {
+    "title": "Arepas La Esquina",
+    "categories": ["Venezuelan restaurant"],
+    "phone": "+57 5 555 1212",
+    "website": null,
+    "address": "Centro, Calle Ejemplo 10",
+    "city": "Cartagena",
+    "rating": 4.4,
+    "reviewsCount": 67,
+    "permanentlyClosed": false
+  }
+]

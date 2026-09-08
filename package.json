@@ -1,0 +1,30 @@
+{
+  "name": "aureus",
+  "version": "2026.7.1",
+  "description": "AUREUS — Framework Soberano para la Fábrica de Páginas Web en Lotes Seriales",
+  "type": "module",
+  "license": "AGPL-3.0-or-later",
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "aureus": "tsx cli/aureus.ts",
+    "status": "tsx cli/fabrica.ts state",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test --import tsx \"phases/**/*.test.ts\" \"orchestration/**/*.test.ts\"",
+    "fabrica": "tsx cli/fabrica.ts",
+    "ingest": "tsx cli/fabrica.ts ingest",
+    "state": "tsx cli/fabrica.ts state",
+    "deploy": "tsx cli/fabrica.ts deploy"
+  },
+  "dependencies": {
+    "p-queue": "^8.0.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}

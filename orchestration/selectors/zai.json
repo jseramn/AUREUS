@@ -1,0 +1,24 @@
+{
+  "chatInput": [
+    { "placeholder": "Describe your app..." },
+    { "role": "textbox" },
+    { "css": "textarea" }
+  ],
+  "sendButton": [
+    { "ariaLabel": "Send" },
+    { "role": "button", "name": "Send" }
+  ],
+  "downloadTar": [
+    { "text": "Download" },
+    { "ariaLabel": "Download project" },
+    { "role": "button", "name": "Download" }
+  ],
+  "buildReady": [
+    { "text": "Build complete" },
+    { "css": "[data-status='ready']" }
+  ],
+  "authWall": [
+    { "text": "Sign in" },
+    { "role": "button", "name": "Sign in" }
+  ]
+}
