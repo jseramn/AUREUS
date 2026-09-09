@@ -18,6 +18,8 @@ data/
 coverage/
 .DS_Store
 *.tsbuildinfo
+.vercel/
+*.sqlite
 sites/
 docs/t7-reports/
 docs/lotes/

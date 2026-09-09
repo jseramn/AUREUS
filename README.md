@@ -81,8 +81,7 @@ El CLI espera un **JSON array** (o NDJSON). Campos útiles (schema permisivo):
 - `website` poblado → **DESCARTADO** (`has_website`). La URL de Maps **no** cuenta.
 - Sin teléfono E.164 saneable → el lead puede pasar FILTERED pero **forja lo
   descarta** (`sin_contacto_verificable`). Prioriza móviles `+57 3xx`.
-- Si Apify te entrega **XML** (como el crawler de Places), conviértelo primero
-  (ver `docs/T7_E2E.md` o el script histórico en `output/t7/`).
+- Si Apify te entrega **XML** (como el crawler de Places), conviértelo primero a JSON.
 
 Verificación: `jq 'length' examples/sample-apify.json` → número de items.
 
@@ -154,7 +153,7 @@ DNS pendiente (curl no resuelve) ≠ fallo de build: el lead queda DEPLOYED con
 ### Paso F — Entregar al comercial
 
 Por cada REPORTED: URL, nombre, vertical, ciudad, teléfono, ángulo de venta
-(3 líneas del market brief). Plantilla en `docs/t7-reports/`.
+(3 líneas del market brief).
 
 ---
 
@@ -213,7 +212,6 @@ AUREUS/
 ├── docs/
 │   ├── DESIGN.md       # 7 decisiones + anti-checklist (lectura de construye)
 │   ├── GLOSARIO.md
-│   ├── T7_E2E.md       # resultado del primer lote
 │   └── T8_BATCH.md     # runbook corto del lote de 10
 ├── sites/              # builds (gitignored) — viven en Vercel + GH
 ├── output/             # artifacts por fase (gitignored)
@@ -232,9 +230,9 @@ con la VM. Lo que persiste:
 3. DNS wildcard: una sola vez en tu registrador DNS.
 
 Sin `GH_TOKEN`, `fabrica deploy` no puede crear el repo GitHub (el token
-integrado `cursor[bot]` lee pero no escribe fuera del run). Workaround
-documentado en T7: deploy solo-Vercel + avance manual del store — **no es el
-camino de producción**.
+integrado `cursor[bot]` lee pero no escribe fuera del run). Workaround:
+deploy solo-Vercel + avance manual del store — **no es el camino de
+producción**.
 
 ---
 
